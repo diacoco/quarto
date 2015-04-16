@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+		<meta property="og:title" content="Quatro, a WebGL experimentation"/>
+		<meta property="og:url" content="http://quatro.deaconescu.net/">
+		<meta property="og:type" content="Website">
+		<meta property="og:description" content="Quarto is a board game for two players invented by Swiss mathematician Blaise Müller in 1991. Players take turns choosing a piece which the other player must then place on the board. A player wins by placing a piece on the board which forms a horizontal, vertical, or diagonal row of four pieces, all of which have a common attribute (all short, all circular, etc.)." />
+		<meta property="og:image" content="http://quatro.deaconescu.net/img/preview.jpg" />
+		<title>Quatro Multiplayer WebGL</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+		<link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+		<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/Detector.js"></script>
+		<script src="libs/hammer.min.js"></script>
+		<script src="libs/tween.js"></script>		
+		<script src="libs/three.min.71.js"></script>
+		<script src="libs/loaders/ColladaLoader.js"></script>
+		<script src="libs/controls/OrbitControls.js"></script>
+		<script src="libs/radio.min.js"></script>
+		<script src="js/sockets.js"></script>
+		<script src="js/loader.js"></script>
+		<script src="js/quarto.js"></script>
+		<script src="js/main.js"></script>
+		<canvas id="gameCanvas"></canvas>
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<form id="loginForm">
+						<div class="modal-header bg-info">
+							<h4 class="modal-title" id="myModalLabel">Quarto</h4>
+						</div>
+						<div class="modal-body">
+							<p><a href='http://fr.wikipedia.org/wiki/Quarto' target="_blank">Quarto</a> is a board game for two players invented by Swiss mathematician Blaise Müller in 1991.</p>
+							<p>Players take turns choosing a piece which the other player must then place on the board. A player wins by placing a piece on the board which forms a horizontal, vertical, or diagonal row of four pieces, all of which have a common attribute (all short, all circular, etc.).</p>
+							<div class="input-group">
+								<div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+								<input type="text" class="form-control" maxlength="12" placeholder="username" id="username">
+							</div>
+							<div class="alert alert-danger text-center" id="loginInvalid" style="display:none">Invalid username or username already in use...</div>
+						</div>
+						<div class="modal-footer bg-info">
+							<button type="submit" class="btn btn-primary">LOGIN</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="challengeModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						<h4 class="modal-title" id="exampleModalLabel"></h4>
+						<div class="spacer10"></div>
+						<button type="button" id="denyChallenge" class="btn btn-danger btn-xs">DENY</button>
+						<button type="button" id="acceptChallenge" class="btn btn-primary btn-xs">ACCEPT</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="challengerModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-body text-center">
+						<h4 class="modal-title" id="exampleModalLabel">Waiting for response...</h4>
+						<div class="spacer10"></div>
+						<button type="button" id="cancelChallenge" class="btn btn-danger btn-xs">CANCEL</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="chat-container max-height">	
+			<div class="chat-users scrollable">
+				<table class="table table-striped" id="users"></table>
+			</div>
+			<div class="chat-messages scrollable">
+				<div class="chat-messages-container">
+					<span id="chat"></span>
+				</div>
+			</div>
+			<div class="chat-fields">
+				<form id="chatForm">
+				<div class="input-group">
+					<input type="text" class="form-control message" maxlength="255">
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-primary" type="button">SEND</button>
+					</span>
+				</div>
+				</form>
+			</div>
+			<div class="quit-room" style="display:none"><button type="button" class="close"><span aria-hidden="true">&times;</span></button></div>
+		</div>
+		<div id="validateCollapse" class="collapse">
+			<div class="well well-lg">
+				<button class="btn btn-danger" type="button">VALIDATE MOVE</button>
+			</div>
+		</div>
+		<div class="your-turn" style="opacity:0"><span style="font-size:27px;">IT'S YOUR</span><br/><span style="line-height:30px">TURN TO</span><br/><span style="font-size:42px; line-height:36px">SHINE</span></div>
+		<div class="game-over-message win">YOU WIN BITCH!</div>
+		<div class="game-over-message lost">YOU LOSE SUCKER!</div>
+
+	</body>
+</html>
