@@ -10,3 +10,6 @@ Made with : Blender, Three.js, radio.js
 install:
 - npm install
 - update the server ip in js/sockets.js
+
+launch:
+- node server.js
