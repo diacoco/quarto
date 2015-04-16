@@ -1,0 +1,32 @@
+{
+  "name": "quarto",
+  "version": "1.0.0",
+  "description": "Quarto is a board game for two players invented by Swiss mathematician Blaise Müller in 1991",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "socket.io": "^1.3.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://diacoco@github.com/diacoco/quarto.git"
+  },
+  "keywords": [
+    "game",
+    "webgl",
+    "three.js",
+    "blender",
+    "node.js",
+    "radio.js"
+  ],
+  "author": "Christophe Deaconescu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diacoco/quarto/issues"
+  },
+  "homepage": "https://github.com/diacoco/quarto"
+}
