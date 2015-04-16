@@ -6,3 +6,5 @@ A player wins by placing a piece on the board which forms a horizontal, vertical
 This is a node.js / webgl multiplayers experimentation of this game.
 
 Made with : Blender, Three.js, radio.js
+
+!!! Update the server ip in js/sockets.js
