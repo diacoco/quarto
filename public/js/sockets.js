@@ -1,5 +1,6 @@
 var CDE = CDE || {};
 var Sockets;
+var SERVER_IP_PORT = "http://localhost:1377";
 
 CDE.Sockets = function() {
 	
@@ -8,7 +9,7 @@ CDE.Sockets = function() {
 	this.users = [];
 	this.userId = "";
 
-	this.socket = io("http://172.16.102.139:1377");
+	this.socket = io(SERVER_IP_PORT);
 	
 	this.socket.on("err", function(e) {
 		radio("error").broadcast(e);
