@@ -7,4 +7,6 @@ This is a node.js / webgl multiplayers experimentation of this game.
 
 Made with : Blender, Three.js, radio.js
 
-!!! Update the server ip in js/sockets.js
+install:
+- npm install
+- update the server ip in js/sockets.js
