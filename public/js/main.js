@@ -10,7 +10,6 @@ $(function() {
 
 	radio("ready").subscribe(gameReady);
 
-
 	// ERROR
 
 	error = function(e) {
@@ -120,7 +119,6 @@ $(function() {
 
 	$("#users").on("click", ".challenge-btn", function() {
 		sockets.challenge($(this).data('id'));
-		$('#challengerModal').modal("show");
 	});
 
 	$("#denyChallenge").click(function(e) {
@@ -140,8 +138,11 @@ $(function() {
 	});
 
 	challenge = function(user) {
-		$('#challengeModal .modal-title').html("New challenge from <strong>" + user.username + "</strong>");
-		$('#challengeModal').modal("show");
+		if (user.id == sockets.userId) $('#challengerModal').modal("show");
+		else {
+			$('#challengeModal .modal-title').html("New challenge from <strong>" + user.username + "</strong>");
+			$('#challengeModal').modal("show");
+		}
 	}
 
 	radio("challenge").subscribe(challenge);
@@ -172,6 +173,7 @@ $(function() {
 	// ROOM LEAVED
 
 	roomLeaved = function() {
+		console.log("roomLeaved");
 		$(".quit-room").hide();
 		$(".your-turn").animate({top:"0px", opacity:0}, 300);
 		if (gameOverMessage) gameOverMessage.animate({top:"0px", opacity:0}, 300);

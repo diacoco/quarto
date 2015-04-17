@@ -90,8 +90,8 @@ CDE.Quarto.prototype.initObjects = function() {
 				tile.castShadow = true;
 				tile.receiveShadow = false;
 				tile.canMove = true;
-				if (i % 2) tile.origin = new THREE.Vector3((i * 2.5) - 8.50, -1, (j * 26) -13);
-				else tile.origin = new THREE.Vector3((i * 2.5) - 8.50, -1, (j * -26) +13);
+				if (i % 2) tile.origin = new THREE.Vector3((i * 2.5) - 8.50, -1, 13 + (j * 3));
+				else tile.origin = new THREE.Vector3((i * 2.5) - 8.50, -1, 16 - (j * 3));
 				this.threeScene.add(tile);
 				this.set.push(tile);
 			}
