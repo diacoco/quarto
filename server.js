@@ -14,6 +14,7 @@ var io = require("socket.io").listen(server);
 const STATUS_IDLE = 0;
 const STATUS_CHALLENGED = 1;
 const STATUS_READY = 2;
+
 const ERROR_USERNAMEALREADYINUSE = {code:1, message:"Username already in use."};
 const ERROR_USERNOTFOUND = {code:2, message:"User not found."};
 const ERROR_USERALREADYCHALLENGED = {code:3, message:"User already in game."};
@@ -71,6 +72,7 @@ io.sockets.on("connection", function(socket) {
 			broadcastUsersList("lobby");
 			io.sockets.in(roomId).emit("challengeAccepted");
 			createGame(roomId);
+			console.log(socket.username + " has accepted challenge from " + user.username);
 		} else {
 			socket.challenge = null;
 			socket.status = 0;
@@ -90,6 +92,8 @@ io.sockets.on("connection", function(socket) {
 			socket.status = STATUS_IDLE;
 
 			broadcastUsersList("lobby");
+
+			console.log(socket.username + " has denied challenged from " + user.username);
 		} else {
 			socket.challenge = null;
 			socket.status = STATUS_IDLE;
@@ -109,6 +113,8 @@ io.sockets.on("connection", function(socket) {
 			socket.status = STATUS_IDLE;
 
 			broadcastUsersList("lobby");
+
+			console.log(socket.username + " has canceled his challenge against " + user.username);
 		} else {
 			socket.challenge = null;
 			socket.status = STATUS_IDLE;
@@ -134,6 +140,8 @@ io.sockets.on("connection", function(socket) {
 		socket.leave(roomId);
 		socket.join("lobby");
 
+		console.log(socket.username + " has quit room " + roomId);
+
 		broadcastUsersList("lobby");
 	});
 
@@ -141,9 +149,11 @@ io.sockets.on("connection", function(socket) {
 		var roomId = socket.roomId;
 		var user = getUserById(socket.challenge);
 		socket.status = STATUS_READY;
+		console.log(socket.username + " is ready in room " + roomId);
 		if (user.status == STATUS_READY) {
 			games[roomId].init();
 			io.sockets.in(roomId).emit("startGame", games[roomId].getCurrentPlayerId());
+			console.log("game started " + socket.username + " vs " + user.username);
 		}
 		broadcastUsersList(roomId);
 	});
