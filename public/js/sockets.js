@@ -1,6 +1,6 @@
 var CDE = CDE || {};
 var Sockets;
-var SERVER_IP_PORT = "http://localhost:1377";
+var SERVER_IP_PORT = window.location.origin;
 
 CDE.Sockets = function() {
 	

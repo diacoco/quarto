@@ -159,7 +159,8 @@ io.sockets.on("connection", function(socket) {
 	});
 
 	socket.on("chatMessage", function(message) {
-		io.sockets.in(socket.roomId).emit("chatMessage", {from:socket.username, id:socket.id, message:message});
+		var roomId = (socket.roomId != null) ? socket.roomId : "lobby";
+		io.sockets.in(roomId).emit("chatMessage", {from:socket.username, id:socket.id, message:message});
 	});
 
 	socket.on("selectTile", function(tileId) {
