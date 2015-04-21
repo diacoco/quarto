@@ -33,6 +33,7 @@ io.sockets.on("connection", function(socket) {
 			socket.join("lobby");
 			socket.emit("logged", socket.id);
 			broadcastUsersList("lobby");
+			io.sockets.in("lobby").emit("chatMessage", {from:"Server", id:socket.id, message:socket.username + " has connected."});
 			console.log(username + " has connected");
 		}
 	});
@@ -51,6 +52,7 @@ io.sockets.on("connection", function(socket) {
 
 				broadcastUsersList("lobby");
 
+				io.sockets.in("lobby").emit("chatMessage", {from:"Server", id:socket.id, message:socket.username + " has challenged " + user.username + "."});
 				console.log(socket.username + " has challenged " + user.username);
 			} else err(socket, ERROR_USERALREADYCHALLENGED);
 		} else {
@@ -218,6 +220,7 @@ io.sockets.on("connection", function(socket) {
 				}
 			}
 			broadcastUsersList("lobby");
+			io.sockets.in("lobby").emit("chatMessage", {from:socket.username, id:socket.id, message:socket.username + " has disconnected."});
 			console.log(socket.username + " has disconnected");
 		}
 	});
