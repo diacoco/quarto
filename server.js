@@ -3,7 +3,7 @@ var app = express();
 
 app.use(express.static("public"));
 
-var server = app.listen(1377, function () {
+var server = app.listen(5900, function () {
   var host = server.address().address;
   var port = server.address().port;
   console.log("Server up & running...");
