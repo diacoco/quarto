@@ -97,15 +97,32 @@ body, html {
 	line-height: 25px;
 }
 
-.game-over-message {
+.game-over {
+	position: absolute;
+	bottom: 45%;
+	width: 100%;
+	opacity: 0;
+	display: none;
+}
+
+.game-over .message {
 	position: absolute;
 	top: 0px;
-	opacity: 0;
+	color: #fff;
 	width: 100%;
 	text-align: center;
 	font-size: 50px;
-	color: #fff;
 	background-color: #f0a276;
+	height: 75px;
+}
+
+.game-over .buttons {
+	position: absolute;
+	top: 75px;
+	background-color: #eeeeee;
+	width: 100%;
+	text-align: center;
+	padding: 10px;
 }
 
 .server-message {

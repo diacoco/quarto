@@ -1,6 +1,5 @@
 $(function() {
 	var sockets;
-	var gameOverMessage;
 	var quarto = new CDE.Quarto();
 
 	gameReady = function() {
@@ -54,7 +53,7 @@ $(function() {
 						usersTD += "<tr><td class='bg-info'> "+users[i].username+"</td></tr>";
 						break;
 					case 1:
-						usersTD += "<tr><td class='bg-warning'>"+users[i].username+"<button type='button' class='btn btn-default pull-right btn-xs ready-btn'><span class='glyphicon glyphicon-ok'></span></button></td></tr>";
+						usersTD += "<tr><td class='bg-warning'>"+users[i].username+"</td></tr>";
 						break;
 					case 2:
 						usersTD += "<tr><td class='bg-success'>"+users[i].username+"</td></tr>";
@@ -137,6 +136,15 @@ $(function() {
 		sockets.leaveRoom();
 	});
 
+	$("#quit").click(function(e) {
+		sockets.leaveRoom();
+	});
+
+	$("#replay").click(function(e) {
+		sockets.replay();
+		$(".game-over").animate({opacity:0}, 300, function(){$(".game-over").hide();});
+	});
+
 	challenge = function(user) {
 		if (user.id == sockets.userId) $('#challengerModal').modal("show");
 		else {
@@ -176,8 +184,7 @@ $(function() {
 		console.log("roomLeaved");
 		$(".quit-room").hide();
 		$(".your-turn").animate({top:"0px", opacity:0}, 300);
-		if (gameOverMessage) gameOverMessage.animate({top:"0px", opacity:0}, 300);
-		gameOverMessage = null;
+		$(".game-over").animate({opacity:0}, 300, function(){$(".game-over").hide();});
 		displayChatMessage("Server", "Back to the lobby...", true);
 		quarto.reset();
 	}
@@ -187,11 +194,13 @@ $(function() {
 	// GAME
 
 	startGame = function(itsMyTurn) {
+		$(".game-over").animate({opacity:0}, 300, function(){$(".game-over").hide();});
 		if (itsMyTurn) {
 			$(".your-turn").animate({top:"20px", opacity:1}, 300);
 			displayChatMessage("Server", "Select a tile for your opponent and place it on the validation square.");
 		}
 		else displayChatMessage("Server", "Please wait for opponent move.");
+		quarto.reset();
 		quarto.start(itsMyTurn);
 	}
 
@@ -237,7 +246,8 @@ $(function() {
 	radio("dropTile").subscribe(dropTile);
 
 	win = function(targetId, tiles) {
-		gameOverMessage = $(".win");
+		$("win").show();
+		$("lost").hide();
 		$(".your-turn").animate({top:"0px", opacity:0}, 300);
 		quarto.gameOver(targetId, tiles);
 	}
@@ -245,7 +255,8 @@ $(function() {
 	radio("win").subscribe(win);
 	
 	lost = function(targetId, tiles) {
-		gameOverMessage = $(".lost");
+		$(".lost").show();
+		$(".win").hide();
 		$(".your-turn").animate({top:"0px", opacity:0}, 300);
 		quarto.gameOver(targetId, tiles);
 	}
@@ -253,7 +264,8 @@ $(function() {
 	radio("lost").subscribe(lost);
 
 	gameOver = function() {
-		gameOverMessage.animate({top:"20px", opacity:1}, 300);
+		$(".game-over").show();
+		$(".game-over").animate({opacity:1}, 300);
 	}
 
 	radio("gameOver").subscribe(gameOver);

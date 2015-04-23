@@ -142,6 +142,10 @@ CDE.Sockets.prototype.dropTile = function(targetId) {
 	this.socket.emit("dropTile", targetId);
 }
 
+CDE.Sockets.prototype.replay = function() {
+	this.socket.emit("replay");
+}
+
 CDE.Sockets.prototype.getUserById = function(id) {
 	for (var i=0, l=this.users.length; i < l; i++) {
 		if (this.users[i].id == id) return this.users[i];

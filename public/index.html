@@ -90,7 +90,7 @@
 				<div class="input-group">
 					<input type="text" class="form-control message" maxlength="255">
 					<span class="input-group-btn">
-						<button type="submit" class="btn btn-primary" type="button">SEND</button>
+						<button type="submit" class="btn btn-primary">SEND</button>
 					</span>
 				</div>
 				</form>
@@ -103,8 +103,11 @@
 			</div>
 		</div>
 		<div class="your-turn" style="opacity:0"><span style="font-size:27px;">IT'S YOUR</span><br/><span style="line-height:30px">TURN TO</span><br/><span style="font-size:42px; line-height:36px">SHINE</span></div>
-		<div class="game-over-message win">YOU WIN BITCH!</div>
-		<div class="game-over-message lost">YOU LOSE SUCKER!</div>
+		<div class="game-over">
+			<div class="message win">YOU WIN BITCH!</div>
+			<div class="message lost">YOU LOSE SUCKER!</div>
+			<div class="buttons"><button type="button" class="btn btn-default" id="quit">QUIT</button> <button type="button" class="btn btn-primary" id="replay">REPLAY</button></div>
+		</div>
 
 	</body>
 </html>

@@ -67,14 +67,23 @@ io.sockets.on("connection", function(socket) {
 			user.join(roomId);
 			user.leave("lobby");
 			user.roomId = roomId;
+			user.status = STATUS_READY;
+
 			socket.join(roomId);
 			socket.leave("lobby");
 			socket.roomId = roomId;
-			broadcastUsersList(roomId);
-			broadcastUsersList("lobby");
+			socket.status = STATUS_READY;
+			
 			io.sockets.in(roomId).emit("challengeAccepted");
 			createGame(roomId);
+			games[roomId].init();
+			io.sockets.in(roomId).emit("startGame", games[roomId].getCurrentPlayerId());
+			
+			broadcastUsersList(roomId);
+			broadcastUsersList("lobby");
+
 			console.log(socket.username + " has accepted challenge from " + user.username);
+			console.log("game started " + socket.username + " vs " + user.username);
 		} else {
 			socket.challenge = null;
 			socket.status = 0;
@@ -142,22 +151,11 @@ io.sockets.on("connection", function(socket) {
 		socket.leave(roomId);
 		socket.join("lobby");
 
+		io.sockets.in("lobby").emit("chatMessage", {from:"Server", id:socket.id, message:socket.username + " has quit the game"});
+
 		console.log(socket.username + " has quit room " + roomId);
 
 		broadcastUsersList("lobby");
-	});
-
-	socket.on("ready", function() {
-		var roomId = socket.roomId;
-		var user = getUserById(socket.challenge);
-		socket.status = STATUS_READY;
-		console.log(socket.username + " is ready in room " + roomId);
-		if (user.status == STATUS_READY) {
-			games[roomId].init();
-			io.sockets.in(roomId).emit("startGame", games[roomId].getCurrentPlayerId());
-			console.log("game started " + socket.username + " vs " + user.username);
-		}
-		broadcastUsersList(roomId);
 	});
 
 	socket.on("chatMessage", function(message) {
@@ -204,6 +202,20 @@ io.sockets.on("connection", function(socket) {
 		} else io.sockets.in(socket.roomId).emit("dropTile", targetId);
 	});
 
+	socket.on("replay", function() {
+		var user = getUserById(socket.challenge);
+		var roomId = socket.roomId;
+		if (user != null) {
+			socket.replay = true;
+			if (user.replay) {
+				socket.replay = null;
+				user.replay = null;
+				games[roomId].init();
+				io.sockets.in(roomId).emit("startGame", games[roomId].getCurrentPlayerId());
+			}
+		}
+	});
+
 	socket.on("disconnect", function() {
 		if (socket.username != null) {
 			var roomId = socket.roomId;
@@ -220,7 +232,7 @@ io.sockets.on("connection", function(socket) {
 				}
 			}
 			broadcastUsersList("lobby");
-			io.sockets.in("lobby").emit("chatMessage", {from:socket.username, id:socket.id, message:socket.username + " has disconnected."});
+			io.sockets.in("lobby").emit("chatMessage", {from:"Server", id:socket.id, message:socket.username + " has disconnected."});
 			console.log(socket.username + " has disconnected");
 		}
 	});
@@ -237,6 +249,7 @@ function createGame(roomId) {
 		init: function(roomId) {
 			this.playerId = Math.round(Math.random());
 			this.grid = [];
+			this.selectedTile = null;
 			for (var x = 0; x < 4; x++) {
 				this.grid[x] = [null,null,null,null];
 			}		
